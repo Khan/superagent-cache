@@ -49,6 +49,15 @@ module.exports = function(superagent, cache, defaults){
     }
 
     /**
+     * Modify the cache key before it's generated.
+     * @param {function} pruneKey
+     */
+    Request.prototype.pruneKey = function(pruneKey){
+      props.pruneKey = pruneKey;
+      return this;
+    }
+
+    /**
      * Execute some logic on superagent's http response object before caching and returning it
      * @param {function} prune
      */

@@ -303,6 +303,29 @@ superagent
 );
 ```
 
+## .pruneKey(callback)
+
+This function takes a function which accepts a cache key object and returns a modified cache key object. This allows you to change what is used to track items in the cache (above-and-beyond what is provided by `.pruneQuery` and `.pruneHeader`).
+
+#### Arguments
+
+* callback: a function which takes a key object
+
+#### Example
+
+```javascript
+//the cache key can be any object but modifying the existing one
+//can allow you to do things like modify the URL used as the cache key
+superagent
+  .get(uri)
+  .set(options)
+  .pruneKey(key => ({...key, uri: key.uri.replace("https:", "http:")}))
+  .end(function (error, response){
+    // handle response
+  }
+);
+```
+
 ## .expiration(seconds)
 
 Use this function when you need to override your `cache`'s `defaultExpiration` property for a particular cache entry.

@@ -191,6 +191,21 @@ describe('superagentCache', function(){
       );
     });
 
+    it('.get() .pruneKey() .end() should query with all params but create a key without the indicated params', function (done) {
+      superagent
+        .get('localhost:3007/one')
+        .pruneKey(function (key) {
+          key.uri = 'localhost:3007/false';
+          return key;
+        })
+        .end(function (err, response, key){
+          expect(key.indexOf('/one')).toBe(-1);
+          expect(key.indexOf('/false')).toBeGreaterThan(-1);
+          done();
+        }
+      );
+    });
+
     it('.get() .query(object) .pruneQuery() .end() should query with all params but create a key without the indicated params', function (done) {
       superagent
         .get('localhost:3007/params')

@@ -14,13 +14,17 @@ module.exports = {
       cleanParams = (cProps.pruneQuery) ? this.pruneObj(this.cloneObject(params), cProps.pruneQuery) : params;
       cleanOptions = (cProps.pruneHeader) ? this.pruneObj(this.cloneObject(options), cProps.pruneHeader, true) : options;
     }
-    return JSON.stringify({
+    var key = {
       nameSpace: agent.cache.nameSpace,
       method: req.method,
       uri: req.url,
       params: cleanParams || params || null,
       options: cleanOptions || options || null
-    });
+    };
+    if (cProps.pruneKey) {
+      key = cProps.pruneKey(key);
+    }
+    return JSON.stringify(key);
   },
 
   /**
@@ -180,6 +184,7 @@ module.exports = {
       prune: d.prune,
       pruneQuery: d.pruneQuery,
       pruneHeader: d.pruneHeader,
+      pruneKey: d.pruneKey,
       responseProp: d.responseProp,
       expiration: d.expiration,
       forceUpdate: d.forceUpdate,
@@ -201,6 +206,7 @@ module.exports = {
         .doQuery(curProps.doQuery)
         .pruneQuery(curProps.pruneQuery)
         .pruneHeader(curProps.pruneHeader)
+        .pruneKey(curProps.pruneKey)
         .prune(curProps.prune)
         .responseProp(curProps.responseProp)
         .expiration(curProps.expiration)
